@@ -12,10 +12,13 @@
   body { margin: 0; font-family: 'Quicksand', sans-serif; background: #DFF5FD; }
   .headline { font-family: 'Luckiest Guy', cursive; letter-spacing: 1px; }
   .cloud { position: absolute; background: #FFFFFF; border-radius: 100px; box-shadow: 0 8px 18px rgba(20,60,90,0.08); }
+  .board-wrap { position: relative; width: 100%; overflow-x: auto; overflow-y: hidden; }
+  .board { position: absolute; left: 50%; top: 0; transform-origin: top center; }
 </style>
 </head>
 <body>
-<div style="width: 2180px; height: 2370px; box-sizing: border-box; position: relative; overflow: hidden; background: linear-gradient(180deg, #2C9FE0 0%, #6FCBF2 25%, #BFEAFB 55%, #DFF5FD 100%); margin: 0 auto;">
+<div class="board-wrap" id="boardWrap">
+<div class="board" id="board" style="width: 2180px; height: 2370px; box-sizing: border-box; overflow: hidden; background: linear-gradient(180deg, #2C9FE0 0%, #6FCBF2 25%, #BFEAFB 55%, #DFF5FD 100%);">
 
   <div style="position: absolute; top: -100px; right: -80px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(255,240,180,0.5) 0%, rgba(255,240,180,0) 70%);"></div>
   <div class="cloud" style="left:2015px; top:2220px; width:127px; height:40px; opacity:0.81;"></div>
@@ -862,5 +865,26 @@
   </div>
 
 </div>
+</div>
+<script>
+(function() {
+  // Board is a fixed 2180x2370 canvas. On a viewport wider than
+  // that, scale it up to fill the extra width instead of sitting pinned
+  // to a small box with padding on both sides - a real friend's
+  // 3840px-wide desktop browser hit exactly this (reported 2026-09-20).
+  // Never scales down; narrow screens keep today's horizontal-scroll
+  // behavior unchanged.
+  var BOARD_W = 2180, BOARD_H = 2370;
+  var wrap = document.getElementById('boardWrap');
+  var board = document.getElementById('board');
+  function resize() {
+    var scale = Math.max(1, window.innerWidth / BOARD_W);
+    board.style.transform = 'translateX(-50%) scale(' + scale + ')';
+    wrap.style.height = Math.round(BOARD_H * scale) + 'px';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+})();
+</script>
 </body>
 </html>
