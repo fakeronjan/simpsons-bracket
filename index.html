@@ -13,7 +13,7 @@
   .headline { font-family: 'Luckiest Guy', cursive; letter-spacing: 1px; }
   .cloud { position: absolute; background: #FFFFFF; border-radius: 100px; box-shadow: 0 8px 18px rgba(20,60,90,0.08); }
   .board-wrap { position: relative; width: 100%; overflow-x: auto; overflow-y: hidden; }
-  .board { position: absolute; left: 50%; top: 0; transform-origin: top center; }
+  .board { position: absolute; left: 0; top: 0; transform-origin: top left; }
 </style>
 </head>
 <body>
@@ -879,7 +879,7 @@
   var board = document.getElementById('board');
   function resize() {
     var scale = Math.max(1, window.innerWidth / BOARD_W);
-    board.style.transform = 'translateX(-50%) scale(' + scale + ')';
+    board.style.transform = 'scale(' + scale + ')';
     var h = Math.round(BOARD_H * scale);
     wrap.style.height = h + 'px';
     // fakeronjan.com embeds this page in a fixed-height iframe (see
