@@ -880,7 +880,14 @@
   function resize() {
     var scale = Math.max(1, window.innerWidth / BOARD_W);
     board.style.transform = 'translateX(-50%) scale(' + scale + ')';
-    wrap.style.height = Math.round(BOARD_H * scale) + 'px';
+    var h = Math.round(BOARD_H * scale);
+    wrap.style.height = h + 'px';
+    // fakeronjan.com embeds this page in a fixed-height iframe (see
+    // sports-pages.njk's resize listener convention) - without this, a
+    // scaled-up board would be clipped/scroll inside that fixed height.
+    if (window.parent !== window) {
+      window.parent.postMessage({type: 'fakeronjan-resize', height: h}, '*');
+    }
   }
   resize();
   window.addEventListener('resize', resize);
